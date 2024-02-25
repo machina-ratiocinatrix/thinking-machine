@@ -1,2 +1,2 @@
-# Package name
-Package Name
+# Thinking Machine
+Thinking Machine.
