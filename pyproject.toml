@@ -2,12 +2,12 @@
 requires = ["setuptools>=67.0"]
 build-backend = "setuptools.build_meta"
 [project]
-name = "machine-name"
+name = "thinking-machine"
 version = "0.0.1"
 authors = [
     {name="Alexander Fedotov", email="alex.fedotov@aol.com"},
 ]
-description = "Machine description"
+description = "Thinking machine is a machine that thinks."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers=[
@@ -27,8 +27,8 @@ dependencies = [
 ]
 
 [project.scripts]
-package-name = "machine_name.cli:run"
+package-name = "thinking_machine.cli:run"
 
 [project.urls]
-"Homepage" = "https://github.com/org_name/package_name"
-"Bug Tracker" = "https://github.com/org_name/package_name/issues"
+"Homepage" = "https://github.com/machina-ratiocinatrix/thinking-machine"
+"Bug Tracker" = "https://github.com/machina-ratiocinatrix/thinking-machine/issues"

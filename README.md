@@ -1,14 +1,14 @@
-# Machine name
-Machine Name
+# Thinking Machine
+Thinking Machine is a machine that thinks.
 <pre>
-  pip install machine-name
+  pip install thinking-machine
 </pre>
 Then:
 ```Python
   # Python
-  import machine_name
+  import thinking_machine
 ```
 Or:
 <pre>
-  uvx machine-name [ARGUMENT] [OPTION]
+  uvx thinking-machine [ARGUMENT] [OPTION]
 </pre>

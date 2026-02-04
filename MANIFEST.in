@@ -1,1 +1,1 @@
-include src/machine_name/*.yaml
+include src/thinking_machine/*.yaml
