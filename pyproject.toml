@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=67.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "machine-name"
+version = "0.0.1"
+authors = [
+    {name="Alexander Fedotov", email="alex.fedotov@aol.com"},
+]
+description = "Machine description"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+]
+
+keywords = ["package-name"]
+
+dependencies = [
+    "PyGithub >= 2.6.0",
+    "PyYAML >= 6.0.1",
+    "urllib3 >= 2.0.4",
+    "requests >= 2.32.3",
+    "click >= 8.3.0"
+]
+
+[project.scripts]
+package-name = "machine_name.cli:run"
+
+[project.urls]
+"Homepage" = "https://github.com/org_name/package_name"
+"Bug Tracker" = "https://github.com/org_name/package_name/issues"
