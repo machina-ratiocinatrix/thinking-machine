@@ -35,7 +35,6 @@ def machine(plato_text, **kwargs):
         thoughts, text = opehaina.respond(
             messages=messages,
             instructions=system_prompt,
-            max_tokens=64000,
             **kwargs
         )
         return thoughts, text
@@ -47,7 +46,6 @@ def machine(plato_text, **kwargs):
         thoughts, text = electroid.respond(
             messages=plato_text_to_muj(plato_text, name),
             instructions=system_prompt,
-            max_tokens=64000,
             **kwargs
         )
         return thoughts, text

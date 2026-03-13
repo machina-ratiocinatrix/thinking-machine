@@ -10,7 +10,7 @@ from github import Github, UnknownObjectException
 from urllib3 import disable_warnings
 import yaml
 import sys
-from config import settings
+from .config import settings
 
 
 github_token    = environ.get('GITHUB_TOKEN', '')
