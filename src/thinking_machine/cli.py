@@ -69,17 +69,17 @@ def run(provider_api_key, github_token):
         raw_input += line
 
     from .machine import machine
-    machine_name = settings['name']
+
     try:
         thoughts, text = machine(raw_input)
         # json.dump((thoughts_output, text_output), sys.stdout)
         # thoughts = llm_soup_to_text(raw_thoughts)
         # text = llm_soup_to_text(raw_text)
-        output = raw_input + new_plato_text(thoughts, text, machine_name)
+        output = raw_input + new_plato_text(thoughts, text, machine_name=settings['name'])
         sys.stdout.write(output)
         sys.stdout.flush()
     except Exception as e:
-        sys.stderr.write(f'{machine_name} did not work {e}')
+        sys.stderr.write(f'Machine did not work {e}')
         sys.stderr.flush()
         sys.exit(0)
 
