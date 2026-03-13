@@ -75,7 +75,7 @@ def run(provider_api_key, github_token):
         # json.dump((thoughts_output, text_output), sys.stdout)
         # thoughts = llm_soup_to_text(raw_thoughts)
         # text = llm_soup_to_text(raw_text)
-        output = raw_input + new_plato_text(thoughts, text, machine_name=settings['name'])
+        output = raw_input + '\n\n' + new_plato_text(thoughts, text, machine_name=settings['name'])
         sys.stdout.write(output)
         sys.stdout.flush()
     except Exception as e:
