@@ -69,7 +69,7 @@ def run(provider_api_key, github_token):
         raw_input += line
 
     from .machine import machine
-    machine_name = {settings['name']}
+    machine_name = settings['name']
     try:
         thoughts, text = machine(raw_input)
         # json.dump((thoughts_output, text_output), sys.stdout)
