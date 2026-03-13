@@ -7,11 +7,16 @@ LICENSE file in the root directory of this source tree.
 """
 from .config import settings
 from .machine import machine
-from .githf import connect_to_repo, read_file
+from .githf import connect_to_repo, read_file, fetch_instructions
+from .utilities import (plato_text_to_muj,
+                        plato_text_to_mpuj,
+                        llm_soup_to_text,
+                        new_plato_text)
 
 __all__ = [
     'machine',
     'connect_to_repo',
     'read_file',
+    'fetch_instructions',
     'settings'
 ]

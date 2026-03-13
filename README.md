@@ -1,9 +1,9 @@
 # Thinking Machine
 A Machine that does thinking.
 ```bash
-  echo '[{"role": "user", "content": "I have a question..."}]' \
+  echo "Theodotos-Alexandreus: Are language models seeking the Truth?" \
     | uvx thinking-machine \
-        --provider-api-key=sk-ant-api... \
+        --provider-api-key=sk-proj-... \
         --github-token=ghp_... 
 ```
 Or:

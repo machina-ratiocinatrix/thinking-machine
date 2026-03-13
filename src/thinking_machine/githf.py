@@ -5,9 +5,12 @@
 This source code is licensed under the license found in the
 LICENSE file in the root directory of this source tree.
 """
-from os import environ
+from os import environ, path
 from github import Github, UnknownObjectException
 from urllib3 import disable_warnings
+import yaml
+import sys
+from config import settings
 
 
 github_token    = environ.get('GITHUB_TOKEN', '')
@@ -95,3 +98,35 @@ def read_file(repository,
         content = ''
 
     return content
+
+
+def fetch_instructions():
+    """Retrieve the system prompt from a private GitHub repo.
+    Falls back to the local machina.yaml if GitHub is unreachable.
+    Returns the 'name' of the Machine in dashed format.
+    Returns the 'description' field from the YAML as the system prompt string.
+    """
+    try:
+        repo = connect_to_repo(
+            organization=settings['machine_organization_name'],
+            repository_name=settings['private_repo_with_text'],
+            private=True
+        )
+        raw_yaml = read_file(
+            repository=repo,
+            file_path=settings['system_prompt_file']
+        )
+    except Exception as e:
+        print(f"Warning: could not fetch prompt from GitHub: {e}",
+              file=sys.stderr)
+        local_path = path.join(path.dirname(__file__), 'machina.yaml')
+        with open(local_path, 'r') as f:
+            raw_yaml = f.read()
+
+    # Parse whatever you've gotten.
+    parsed = yaml.safe_load(raw_yaml)
+    name = parsed.get('name')
+    settings['name'] = name
+    instructions = parsed.get('description', 'You are a helpful assistant.')
+    settings['instructions'] = instructions
+    return name, instructions

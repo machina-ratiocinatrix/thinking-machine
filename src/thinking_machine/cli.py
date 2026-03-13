@@ -9,6 +9,7 @@ from os import environ
 import sys
 import signal
 from .config import settings
+from .utilities import llm_soup_to_text, new_plato_text
 import json
 import click
 import fileinput
@@ -30,7 +31,7 @@ signal.signal(signal.SIGINT, handle_sigint)
               default='no_provider_key', help='Language Model API provider key.')
 @click.option('--github-token', envvar='GITHUB_TOKEN',
               default='', help='GitHub API token for private repo access.')
-def run(provider_api_key, github_token, mode):
+def run(provider_api_key, github_token):
     """
         $ text | ./run.py                   # Accepts text from the pipe
         $ ./run.py /home/user/file.txt      # Reads file.
@@ -68,15 +69,17 @@ def run(provider_api_key, github_token, mode):
         raw_input += line
 
     from .machine import machine
-    thinking_machine = {settings['name']}
+    machine_name = {settings['name']}
     try:
-        text, thoughts = machine(raw_input)
+        raw_thoughts, raw_text = machine(raw_input)
         # json.dump((thoughts_output, text_output), sys.stdout)
-        sys.stdout.write(f'{thinking_machine}: (to itself) {thoughts}\n')
-        sys.stdout.write(f'{thinking_machine}: {text}\n')
+        thoughts = llm_soup_to_text(raw_thoughts)
+        text = llm_soup_to_text(raw_text)
+        output = raw_input + new_plato_text(thoughts, text, machine_name)
+        sys.stdout.write(output)
         sys.stdout.flush()
     except Exception as e:
-        sys.stderr.write(f'{thinking_machine} did not work {e}')
+        sys.stderr.write(f'{machine_name} did not work {e}')
         sys.stderr.flush()
         sys.exit(0)
 
