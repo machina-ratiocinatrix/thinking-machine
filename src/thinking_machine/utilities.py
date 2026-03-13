@@ -277,7 +277,7 @@ def new_plato_text(thoughts, text, machine_name):
 
     if text and text.strip():
         # cleaned_text = re.sub(r'\n{2,}', '\n\t', text.strip())
-        result += f"{machine_name}: {text}\n\n"
+        result += f"{machine_name}: {text}"
 
     return result
 
