@@ -6,10 +6,10 @@ This source code is licensed under the license found in the
 LICENSE file in the root directory of this source tree.
 """
 from os import environ, path
-from config import settings
+from .config import settings
 from yaml import safe_load as yl
-from githf import fetch_instructions
-from utilities import plato_text_to_muj
+from .githf import fetch_instructions
+from .utilities import plato_text_to_muj
 
 
 def machine(plato_text, **kwargs):
