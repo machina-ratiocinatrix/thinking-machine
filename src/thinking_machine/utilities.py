@@ -272,12 +272,12 @@ def new_plato_text(thoughts, text, machine_name):
     """
     result = ""
     if thoughts and thoughts.strip():
-        # cleaned_thoughts = re.sub(r'\n{2,}', '\n\t', thoughts.strip())
-        result += f"{machine_name}: (thinking) {thoughts}\n\n"
+        cleaned_thoughts = re.sub(r'\n{2,}', '\n\t', thoughts.strip())
+        result += f"{machine_name}: (thinking) {cleaned_thoughts}\n\n"
 
     if text and text.strip():
-        # cleaned_text = re.sub(r'\n{2,}', '\n\t', text.strip())
-        result += f"{machine_name}: {text}"
+        cleaned_text = re.sub(r'\n{2,}', '\n\t', text.strip())
+        result += f"{machine_name}: {cleaned_text}\n\n"
 
     return result
 
