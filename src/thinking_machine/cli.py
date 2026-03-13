@@ -71,10 +71,10 @@ def run(provider_api_key, github_token):
     from .machine import machine
     machine_name = {settings['name']}
     try:
-        raw_thoughts, raw_text = machine(raw_input)
+        thoughts, text = machine(raw_input)
         # json.dump((thoughts_output, text_output), sys.stdout)
-        thoughts = llm_soup_to_text(raw_thoughts)
-        text = llm_soup_to_text(raw_text)
+        # thoughts = llm_soup_to_text(raw_thoughts)
+        # text = llm_soup_to_text(raw_text)
         output = raw_input + new_plato_text(thoughts, text, machine_name)
         sys.stdout.write(output)
         sys.stdout.flush()
