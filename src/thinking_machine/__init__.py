@@ -11,7 +11,8 @@ from .githf import fetch_instructions
 from .utilities import (plato_text_to_muj,
                         plato_text_to_mpuj,
                         llm_soup_to_text,
-                        new_plato_text)
+                        new_plato_text,
+                        messages_to_mpj)
 
 __all__ = [
     'machine',

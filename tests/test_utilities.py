@@ -1,7 +1,7 @@
 import unittest
 import json
 import os
-from src.name_of_the_machine.utilities import (
+from src.thinking_machine.utilities import (
     plato_text_to_cmj,
     plato_text_to_muj,
     plato_text_to_mpuj,

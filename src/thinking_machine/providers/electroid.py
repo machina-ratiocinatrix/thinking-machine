@@ -40,7 +40,7 @@ def respond(messages=None, instructions=None, **kwargs):
         "x-api-key": api_key,
         "anthropic-version": api_type,
         "content-type": "application/json",
-        "User-Agent": "Name-of-the-Machine"
+        "User-Agent": "Thinking-Machine"
     }
 
     # Create the Request object

@@ -79,7 +79,7 @@ def respond(messages=None, instructions=None, **kwargs):
     # Set the mandatory headers
     headers = {
         "Content-Type": "application/json",
-        "User-Agent": "Name-of-the-Machine"
+        "User-Agent": "Thinking-Machine"
     }
 
     # urlencode parameter

@@ -3,13 +3,13 @@ requires = ["uv_build>=0.10.9,<0.11.0"]
 build-backend = "uv_build"
 
 [project]
-name = "name-of-the-machine"
-version = "0.0.1"
+name = "thinking-machine"
+version = "0.0.17"
 authors = [
     {name="Machina Ratiocinatrix", email="machina.ratio@gmail.com"},
     {name="Alexander Fedotov", email="alex.fedotov@aol.com"}
 ]
-description = "Description of the Machine"
+description = "A Machine that thinks."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers=[
@@ -17,17 +17,17 @@ classifiers=[
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
 ]
-keywords = ["name-of-the-machine"]
+keywords = ["thinking-machine"]
 dependencies = [
     "pyyaml == 6.0.3",
     "click == 8.3.1"
 ]
 
 [project.scripts]
-name-of-the-machine = "name_of_the_machine.cli:run"
+thinking-machine = "thinking_machine.cli:run"
 
 [project.urls]
-"Homepage" = "https://github.com/name-of-the-machine/name-of-the-machine"
+"Homepage" = "https://github.com/machina-ratiocinatrix/thinking-machine"
 
 [dependency-groups]
 dev = ["pytest>=8.0.0"]

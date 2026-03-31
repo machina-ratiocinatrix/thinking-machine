@@ -11,15 +11,22 @@ import json
 from os import environ
 
 
-def respond(messages, instructions, **kwargs):
+def respond(messages=None, instructions=None, **kwargs):
+    """A continuation of text with a given context and instruction.
+        kwargs:
+            temperature     = 0 to 1.0
+            top_p           = 0.0 to 1.0
+            top_k           = The maximum number of tokens to consider when sampling.
+            n               = 1 is mandatory for this method continuationS have n > 1
+            max_tokens      = number of tokens
+            stop            = ['stop']  array of up to 4 sequences
     """
-    """
-    api_key = environ.get("DEPSEK_API_KEY")
-    api_base = environ.get("DEPSEK_API_BASE", "https://api.deepseek.com")
-    default_model = environ.get("DEPSEK_DEFAULT_MODEL", "deepseek-reasoner")
+    api_key = environ.get('META_API_KEY', '')  # meta_KEY', '')
+    api_base = environ.get('META_API_BASE', 'https://api.llama.com/v1')
+    content_model = environ.get('META_DEFAULT_CONTENT_MODEL', 'Llama-4-Maverick-17B-128E-Instruct-FP8')
 
-    instruction = kwargs.get('system_instruction', instructions)
-    first_message = [dict(role='system', content=instruction)] if instruction else []
+    instruction         = kwargs.get('system_instruction', instructions)
+    first_message       = [dict(role='system', content=instruction)] if instruction else []
 
     # add contents and user text to the first (instruction) message
     first_message.extend(messages)
@@ -27,13 +34,14 @@ def respond(messages, instructions, **kwargs):
 
     # Define the payload
     payload = {
-        "model":            kwargs.get("model", default_model),
-        "messages":         instruction_and_contents,
-        "max_tokens":       kwargs.get("max_tokens", 32000),
-        "temperature":      kwargs.get("temperature", 1.0),
-        "thinking": {
-            "type": "enabled"
-        }
+        'model':                    kwargs.get('model', content_model),
+        'messages':                 instruction_and_contents,
+        'response_format':          kwargs.get('response_format',{'type': 'text'}),
+        'temperature':              kwargs.get('temperature', 1.0),  # 0.0 to 1.0
+        'max_completion_tokens':    kwargs.get('max_tokens', 4028),
+        'top_p':                    kwargs.get('top_p', 0.9),
+        'top_k':                    kwargs.get('top_k', 10),
+        'stream':                   False
     }
 
     # Convert data dictionary to JSON and encode it to bytes
@@ -43,7 +51,7 @@ def respond(messages, instructions, **kwargs):
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
-        "User-Agent": "Name-of-the-Machine"
+        "User-Agent": "Thinking-Machine"
     }
 
     # Create the Request object
@@ -58,11 +66,9 @@ def respond(messages, instructions, **kwargs):
         with urllib.request.urlopen(req, timeout=300) as response:
             response_data = response.read().decode('utf-8')
             output = json.loads(response_data)
-            message = output['choices'][0]['message']
-            text = message['content']
-            thoughts = message['reasoning_content']
+            text = output['completion_message']['content']['text']
 
-        return thoughts, text
+        return '', text
 
     except urllib.error.HTTPError as e:
         # Handle HTTP errors (e.g., 401 Unauthorized, 400 Bad Request)

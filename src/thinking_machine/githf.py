@@ -22,7 +22,7 @@ def download_github_file(owner, repo, file_path, token):
     headers = {
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github.v3.raw",
-        "User-Agent": "Name-of-the-Machine"
+        "User-Agent": "Thinking-Machine"
     }
 
     req = urllib.request.Request(url, headers=headers)

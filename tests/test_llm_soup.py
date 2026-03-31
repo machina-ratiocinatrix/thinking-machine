@@ -1,5 +1,5 @@
 import unittest
-from src.name_of_the_machine.utilities import llm_soup_to_text
+from src.thinking_machine.utilities import llm_soup_to_text
 
 
 class TestLLMSoupToText(unittest.TestCase):
