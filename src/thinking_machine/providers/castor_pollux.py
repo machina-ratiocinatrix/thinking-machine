@@ -18,7 +18,7 @@ def respond(messages=None, instructions=None, **kwargs):
     """
     api_key = environ.get('GEMINI_API_KEY', '')
     api_base = environ.get('GEMINI_API_BASE', 'https://generativelanguage.googleapis.com/v1beta')
-    content_model = environ.get('GEMINI_DEFAULT_CONTENT_MODEL', 'gemini-2.5-flash')
+    content_model = environ.get('GEMINI_DEFAULT_CONTENT_MODEL', 'gemma-4-31b-it')
 
     garbage = [
         {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'},
@@ -44,14 +44,15 @@ def respond(messages=None, instructions=None, **kwargs):
             'includeThoughts': kwargs.get('include_thoughts', True),
             'thinkingLevel': kwargs.get('thinking_level', 'high')
         }
-
-    # Transform standard messages to mpj
-    contents = messages_to_mpj(kwargs.get('messages', messages))
+    elif model.startswith('gemma-4'):
+        thinking_config = {
+            'includeThoughts': kwargs.get('include_thoughts', True)
+        }
 
     # Define the payload
     payload = {
         'systemInstruction': system_instruction,
-        'contents': contents,
+        'contents': messages,
         'safetySettings': garbage,
         'generationConfig': {
             'stopSequences': kwargs.get('stop_sequences', ['STOP', 'Title']),
@@ -79,7 +80,7 @@ def respond(messages=None, instructions=None, **kwargs):
     # Set the mandatory headers
     headers = {
         "Content-Type": "application/json",
-        "User-Agent": "Thinking-Machine"
+        "User-Agent": "Name-of-the-Machine"
     }
 
     # urlencode parameter
