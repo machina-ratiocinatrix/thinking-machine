@@ -21,11 +21,11 @@ from .utilities import new_plato_text
 @click.option('--debug/--no-debug', default=False, help='Print full stack trace on errors.')
 def run(provider_api_key, github_token, debug):
     """
-        $ text | ./run.py                   # Accepts text from the pipe
-        $ ./run.py /home/user/file.txt      # Reads file.
-        $ ./run.py < /home/user/file.txt    # Reads file.
+    $ text | thinking-machine        # Accepts text from the pipe
 
-        secrets come through the environment variables.
+    $ thinking-machine file.txt      # Reads file.
+
+    $ thinking-machine < file.txt    # Loads file.
     """
     config = Config()
     

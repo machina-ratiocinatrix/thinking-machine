@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "thinking-machine"
-version = "0.0.18"
+version = "0.0.19"
 authors = [
     {name="Machina Ratiocinatrix", email="machina.ratio@gmail.com"},
     {name="Alexander Fedotov", email="alex.fedotov@aol.com"}
