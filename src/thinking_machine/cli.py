@@ -14,18 +14,23 @@ from .utilities import new_plato_text
 
 
 @click.command()
-@click.option('--provider-api-key', envvar='PROVIDER_API_KEY',
-              default='no_provider_key', help='Language Model API provider key.')
-@click.option('--github-token', envvar='GITHUB_TOKEN',
-              default='', help='GitHub API token for private repo access.')
-@click.option('--debug/--no-debug', default=False, help='Print full stack trace on errors.')
-def run(provider_api_key, github_token, debug):
+@click.option('-k', '--provider-api-key',
+              envvar='PROVIDER_API_KEY',
+              default='no_key', help='Language Model API provider key.')
+@click.option('-t', '--github-token', envvar='GITHUB_TOKEN',
+              default='no_token', help='GitHub API token for private repo access.')
+@click.option('-d', '--debug/--no-debug',
+              default=False, help='Print full stack trace on errors.')
+@click.option('-i', '--interactive',
+              is_flag=True, help='Respond and stay interactive')
+@click.argument('filenames', nargs=-1,
+                type=click.Path(exists=True))
+def run(provider_api_key, github_token, debug, interactive, filenames):
     """
-    $ text | thinking-machine        # Accepts text from the pipe
+    $ text | name-of-the-machine                    # Accepts text from the pipe
+    $ echo "...<text>..." | name-of-the-machine     #
 
-    $ thinking-machine file.txt      # Reads file.
-
-    $ thinking-machine < file.txt    # Loads file.
+    $ name-of-the-machine multilogue.txt new_turn.txt    # Loads files.
     """
     config = Config()
     
@@ -67,7 +72,7 @@ def run(provider_api_key, github_token, debug):
         environ['GITHUB_TOKEN'] = github_token
 
     raw_input = ''
-    for line in fileinput.input(encoding="utf-8"):
+    for line in fileinput.input(files=filenames or ('-',), encoding="utf-8"):
         raw_input += line
 
     from .machine import machine
