@@ -9,7 +9,7 @@ echo "Theodotos-Alexandreus: Are language models seeking the Truth, machine?" \
     --github-token=ghp_... 
 ```
 
-Or, with local pip installation:
+Or, with a local pip installation:
 ```bash
 pip install thinking-machine
 ```
