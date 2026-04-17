@@ -7,6 +7,7 @@ LICENSE file in the root directory of this source tree.
 """
 from .config import Config
 from .machine import machine
+from .cli import run
 from .githf import fetch_instructions
 from .utilities import (plato_text_to_muj,
                         plato_text_to_mpuj,
@@ -16,6 +17,7 @@ from .utilities import (plato_text_to_muj,
 
 __all__ = [
     'machine',
+    'run',
     'fetch_instructions',
     'Config'
 ]
