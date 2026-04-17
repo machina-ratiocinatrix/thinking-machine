@@ -72,7 +72,7 @@ def run(provider_api_key, github_token, debug, interactive, filenames):
         environ['GITHUB_TOKEN'] = github_token
 
     raw_input = ''
-    for line in fileinput.input(files=filenames or ('-',), encoding="utf-8"):
+    for line in fileinput.input(files=filenames, encoding="utf-8"):
         raw_input += line
 
     from .machine import machine
