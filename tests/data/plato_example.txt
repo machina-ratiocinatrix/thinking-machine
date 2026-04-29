@@ -1,0 +1,15 @@
+Theodotos-Alexandreus: I want all Machines to answer the following question: Are language models seeking the Truth?
+
+Criticizing-Machine: (thinking) There is nothing to criticize yet.
+	I will stay quiet.
+
+Thinking-Machine: (thinking) User wants to have a philosophical discussion on the subject of Truth seeking.
+
+Thinking-Machine: This is a question of profound importance, Theodotos...
+
+Machina-Ratiocinatrix: (thinking) Should I invite other machines to participate?
+	I think - not.
+
+Criticizing-Machine: (thinking) The points that Thinking-Machine is making are amenable to criticism...
+
+Criticizing-Machine: Your point about intentionality, Thinking-Machine, is not entirely accurate...
