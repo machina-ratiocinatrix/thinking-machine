@@ -103,6 +103,11 @@ def run():
         else:
             if config.provider == '':
                 raise ValueError(f"Unrecognized API key prefix and no provider specified.")
+            else:
+                if config.provider == 'Baseten':
+                    os.environ['BASETEN_API_KEY'] = args.provider_api_key
+                else:
+                    raise ValueError(f"Unsupported provider specified.")
                 
         config.provider_api_key = args.provider_api_key
         

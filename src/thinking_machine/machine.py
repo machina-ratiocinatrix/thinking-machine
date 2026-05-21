@@ -152,6 +152,26 @@ def machine(plato_text, config, **kwargs):
 
         return thoughts, text
 
+    elif provider == 'Baseten':
+        # Transform plato_text to CMJ format
+        messages = plato_text_to_cmj(plato_text=plato_text,
+                                     machine_name=name)
+        # Call OpenAI API via opehaina
+        environ['BASETEN_API_KEY'] = api_key
+        try:
+            from .providers import basta
+        except ImportError:
+            print("openai module is missing.", file=sys.stderr)
+            sys.exit(1)
+
+        thoughts, text = basta.respond(
+            messages=messages,
+            instructions=system_prompt,
+            **kwargs
+        )
+
+        return thoughts, text
+
     elif provider == 'Meta':
         # Transform plato_text to CMJ format
         messages = plato_text_to_cmj(plato_text=plato_text,
