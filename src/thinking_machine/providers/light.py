@@ -14,7 +14,7 @@ from os import environ
 def respond(messages, instructions, **kwargs):
     """
     """
-    api_key = environ.get("LIGHNING_API_KEY")
+    api_key = environ.get("LIGHTNING_API_KEY")
     api_base = environ.get("LIGHTNING_API_BASE", "https://lightning.ai/api/v1")
     default_model = environ.get("LIGHTNING_DEFAULT_MODEL", "openai/gpt-5.5-2026-04-23")
 
@@ -29,12 +29,9 @@ def respond(messages, instructions, **kwargs):
     payload = {
         "model":            kwargs.get("model", default_model),
         "messages":         instruction_and_contents,
-        "max_tokens":       kwargs.get("max_tokens", 32000),
+        "max_completion_tokens":       kwargs.get("max_tokens", 32000),
         "temperature":      kwargs.get("temperature", 1.0),
-        "reasoning_effort": kwargs.get("reasoning_effort", "high"),
-        "thinking": {
-            "type": "enabled"
-        }
+        "reasoning_effort": kwargs.get("reasoning_effort", "xhigh"),
     }
 
     # Convert data dictionary to JSON and encode it to bytes
@@ -61,7 +58,7 @@ def respond(messages, instructions, **kwargs):
             output = json.loads(response_data)
             message = output['choices'][0]['message']
             text = message['content']
-            thoughts = message['reasoning_content']
+            thoughts = message.get('reasoning_content', '')
 
         return thoughts, text
 
