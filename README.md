@@ -26,15 +26,6 @@ Or:
 ```bash
 thinking-machine multilogue.txt > response.txt
 ```
-Or:
-```bash
-thinking-machine -a multilogue.txt | vim
-```
-Or:
-```bash
-thinking-machine -a multilogue.txt > tmp && echo tmp > multilogue.txt
-```
-
 Or use it in your Python code:
 ```Python
 # Python
