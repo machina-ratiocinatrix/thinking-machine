@@ -106,6 +106,8 @@ def run():
             else:
                 if config.provider == 'Baseten':
                     os.environ['BASETEN_API_KEY'] = args.provider_api_key
+                elif config.provider == 'Lightning':
+                    os.environ['LIGHTNING_API_KEY'] = args.provider_api_key
                 else:
                     raise ValueError(f"Unsupported provider specified.")
                 
