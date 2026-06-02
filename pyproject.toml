@@ -24,6 +24,7 @@ dependencies = [
 
 [project.scripts]
 thinking-machine = "thinking_machine.cli:run"
+think = "thinking_machine.cli:run"
 
 [project.urls]
 "Homepage" = "https://github.com/machina-ratiocinatrix/thinking-machine"
