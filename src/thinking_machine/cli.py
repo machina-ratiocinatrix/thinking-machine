@@ -93,6 +93,9 @@ def run():
         elif args.provider_api_key.startswith('xai-'):
             config.provider = 'XAI'
             os.environ['XAI_API_KEY'] = args.provider_api_key
+        elif args.provider_api_key.startswith('tml-'):
+            config.provider = 'Tinker'
+            os.environ['TINKER_API_KEY'] = args.provider_api_key
         elif args.provider_api_key.startswith('LLM|'):
             config.provider = 'Meta'
             os.environ['META_API_KEY'] = args.provider_api_key
@@ -108,8 +111,6 @@ def run():
                     os.environ['BASETEN_API_KEY'] = args.provider_api_key
                 elif config.provider == 'Fireworks':
                     os.environ['FIREWORKS_API_KEY'] = args.provider_api_key
-                elif config.provider == 'Tinker':
-                    os.environ['TINKER_API_KEY'] = args.provider_api_key
                 elif config.provider == 'Lightning':
                     os.environ['LIGHTNING_API_KEY'] = args.provider_api_key
                 else:
