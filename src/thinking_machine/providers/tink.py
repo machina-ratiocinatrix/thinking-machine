@@ -13,8 +13,7 @@ from os import environ
 
 api_key = environ.get("TINKER_API_KEY", '')
 default_model = environ.get("TINKER_DEFAULT_MODEL", 'thinkingmachines/Inkling')
-api_base_oai = environ.get("TINKER_OAI_API_BASE", 'https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1')
-api_base_ant = environ.get("TINKER_ANT_API_BASE", 'https://tinker.thinkingmachines.dev/services/tinker-prod/anthropic/api/v1')
+api_base = environ.get("TINKER_OAI_API_BASE", 'https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1')
 
 
 # Set the mandatory headers
@@ -72,12 +71,8 @@ def call_function(func, func_args):
     return result
 
 
-def query(payload, url_suffix, url_prefix=None):
+def query(payload, url_suffix):
     # Convert data dictionary to JSON and encode it to bytes
-    if url_prefix:
-        api_base = url_prefix
-    else:
-        api_base= api_base_oai
     data_bytes = json.dumps(payload).encode('utf-8')
     # Create the Request object
     req = urllib.request.Request(
@@ -106,83 +101,65 @@ def query(payload, url_suffix, url_prefix=None):
         return {}
 
 
-def decode_output(output):
-    # Parse the result
-    text = ''; thoughts = ''
-    for part in output:
-        part_type = part.get('type', None)
-        if part_type == 'message':
-            text = " ".join([chunk['text'] for chunk in part['content'] if chunk['type'] == 'output_text'])
-        elif part_type == 'reasoning':
-            thoughts = " ".join([chunk['text'] for chunk in part['summary'] if chunk['type'] == 'summary_text'])
-    function_calls = [part for part in output if part['type'] == 'function_call']
-    return thoughts, text, function_calls
-
-
-def get_weather(location):
-    # print(f"Executing weather tool for location: {location}")
-    return {"temperature": "72F", "condition": "Sunny"}
-
-
 def respond(messages=None, instructions=None, tools=None, **kwargs):
+    """ They don't have responses, emulation through chat completions.
     """
-    """
-    # Receive the instruction
-    instruction = kwargs.get('system_instruction', instructions)
+    instruction         = kwargs.get('system_instruction', instructions)
+    first_message       = [dict(role='system', content=instruction)] if instruction else []
 
-    # Define the initial payload
+    # contents can come in kwards or as an argument
+    messages            = kwargs.get('messages', messages)
+
+    first_message.extend(messages)
+    instruction_and_contents = first_message
+
     payload = {
-        "model":            kwargs.get("model", default_model),
-        "instructions":     instruction,
-        "input":            messages,
-        "max_output_tokens": kwargs.get("max_tokens", 132000),
-        "prompt_cache_retention": "in_memory",
-        "include": ["reasoning.encrypted_content"],
-        "reasoning": {
-            "effort": "high",
-            "summary": "detailed"
-        }
+        'model': kwargs.get('model', default_model),
+        'messages': instruction_and_contents,
+        # 'response_format':          kwargs.get('response_format',{'type': 'text'}),
+        'temperature': kwargs.get('temperature', 1),  # 0.0 to 2.0
+        'max_tokens': kwargs.get('max_tokens', 4096),
+        'n': kwargs.get('n', 1),
+        'top_p': kwargs.get('top_p', 0.9),
+        'reasoning_effort': kwargs.get('reasoning_effort', 'high'),  # 'low', 'medium', 'high'
+        'stream': False
     }
-    # Tools if there are some
     if tools:
         payload['tools'] = tools
+        payload['parallel_tool_calls'] = True
         payload['tool_choice'] = 'auto'
 
     while True:
-        # Query the API
-        result = query(payload, '/responses')
-        # id of the response
-        response_id = result['id']
-        thoughts, text, function_calls = decode_output(result.get('output', {}))
+        result = query(payload, '/chat/completions')
+        completion_message = result['choices'][0]['message']
+        instruction_and_contents.append(completion_message)
+        thoughts = completion_message.get('reasoning_content', '')
+        text = completion_message.get('content', '')
+        function_calls = completion_message.get('tool_calls', [])
 
         if function_calls:
-            function_outputs_messages = []
+            # Call all requested functions and create response messages.
             for function_call in function_calls:
-                call_id = function_call.get('call_id')
-                func_name = function_call.get('name', '')
-                func_args_str = function_call.get('arguments', '{}')
+                call_id = function_call.get('id')
+                func_def = function_call.get('function')
+                func_name = func_def.get('name', '')
+                func_args_str = func_def.get('arguments', {})
                 # Look up tool by name in globals and caller frames
                 func = get_function(func_name)
                 func_args = get_func_args(func_args_str)
                 result = call_function(func, func_args)
 
                 tool_message = {
-                    "type": "function_call_output",
-                    "call_id": call_id,
-                    "output": result
+                    "role": "tool",
+                    "tool_call_id": call_id,
+                    "content": result
                 }
-                function_outputs_messages.append(tool_message)
-
-            # Now that all responses have been gathered
-            # we can change the payload and send them back
-            payload['include'] = [] # must be removed if response_id
-            payload['previous_response_id'] = response_id
-            payload['input'] = function_outputs_messages
+                instruction_and_contents.append(tool_message)
         else:
             break
 
     return thoughts, text
 
 
-if __name__ == "__main__":
-    ...
+if __name__ == '__main__':
+   ...
