@@ -15,7 +15,7 @@ from .utilities import (plato_text_to_muj,
 
 
 def machine(plato_text, config, **kwargs):
-    """Core agent logic.
+    """Core machine logic.
 
     1. Fetches the system prompt from a private GitHub repo.
     2. Calls Provider
@@ -41,6 +41,27 @@ def machine(plato_text, config, **kwargs):
             sys.exit(1)
             
         thoughts, text = openai.respond(
+            messages=messages,
+            instructions=system_prompt,
+            **kwargs
+        )
+
+        thoughts = llm_soup_to_text(thoughts)
+        return thoughts, text
+
+    elif provider == 'Tinker':
+        # Transform plato_text to MUJ format
+        messages = plato_text_to_muj(plato_text=plato_text,
+                                     machine_name=name)
+        # Call OpenAI API
+        environ['TINKER_API_KEY'] = api_key
+        try:
+            from .providers import tink
+        except ImportError:
+            print("openai module is missing.", file=sys.stderr)
+            sys.exit(1)
+
+        thoughts, text = tink.respond(
             messages=messages,
             instructions=system_prompt,
             **kwargs
@@ -210,6 +231,27 @@ def machine(plato_text, config, **kwargs):
             **kwargs
         )
 
+        return thoughts, text
+
+    elif provider == 'Fireworks':
+        # Transform plato_text to MUJ format
+        messages = plato_text_to_muj(plato_text=plato_text,
+                                     machine_name=name)
+        # Call OpenAI API via opehaina
+        environ['FIREWORKS_API_KEY'] = api_key
+        try:
+            from .providers import illuminati
+        except ImportError:
+            print("illuminati module is missing.", file=sys.stderr)
+            sys.exit(1)
+
+        thoughts, text = illuminati.respond(
+            messages=messages,
+            instructions=system_prompt,
+            **kwargs
+        )
+
+        thoughts = llm_soup_to_text(thoughts)
         return thoughts, text
 
 

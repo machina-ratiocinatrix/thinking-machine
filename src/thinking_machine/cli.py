@@ -106,6 +106,10 @@ def run():
             else:
                 if config.provider == 'Baseten':
                     os.environ['BASETEN_API_KEY'] = args.provider_api_key
+                elif config.provider == 'Fireworks':
+                    os.environ['FIREWORKS_API_KEY'] = args.provider_api_key
+                elif config.provider == 'Tinker':
+                    os.environ['TINKER_API_KEY'] = args.provider_api_key
                 elif config.provider == 'Lightning':
                     os.environ['LIGHTNING_API_KEY'] = args.provider_api_key
                 else:
