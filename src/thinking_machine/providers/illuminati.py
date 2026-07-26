@@ -11,17 +11,15 @@ import urllib.error
 from os import environ
 
 
-api_key = environ.get("TINKER_API_KEY", '')
-default_model = environ.get("TINKER_DEFAULT_MODEL", 'thinkingmachines/Inkling')
-api_base_oai = environ.get("TINKER_OAI_API_BASE", 'https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1')
-api_base_ant = environ.get("TINKER_ANT_API_BASE", 'https://tinker.thinkingmachines.dev/services/tinker-prod/anthropic/api/v1')
+# The configuration.
+api_key                 = environ.get('FIREWORKS_API_KEY')
+api_base                = environ.get('FIREWORKS_BASE_URL', 'https://api.fireworks.ai/inference/v1')
+default_model = environ.get('FIREWORKS_MODEL','accounts/fireworks/models/gpt-oss-120b')
 
-
-# Set the mandatory headers
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {api_key}",
-    "User-Agent": "machine-thinking"
+    "Authorization": "Bearer " + api_key,
+    "User-Agent": "illuminations"
 }
 
 
