@@ -30,7 +30,7 @@ def respond(messages=None, instructions=None, tools=None, **kwargs):
     # The configuration.
     api_key = environ.get('FIREWORKS_API_KEY')
     api_base = environ.get('FIREWORKS_BASE_URL', 'https://api.fireworks.ai/inference/v1')
-    default_model = environ.get('FIREWORKS_MODEL', 'accounts/fireworks/models/kimi-k3')
+    default_model = environ.get('MODEL', 'accounts/fireworks/models/kimi-k3')
 
     headers = {
         "Content-Type": "application/json",

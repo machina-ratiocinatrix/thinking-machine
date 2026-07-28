@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "thinking-machine"
-version = "0.1.16"
+version = "0.1.17"
 authors = [
     {name="Machina Ratiocinatrix", email="machina.ratio@gmail.com"},
     {name="Alexander Fedotov", email="alex.fedotov@aol.com"}
