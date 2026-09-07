@@ -93,6 +93,9 @@ def run():
         elif args.provider_api_key.startswith('xai-'):
             config.provider = 'XAI'
             os.environ['XAI_API_KEY'] = args.provider_api_key
+        elif args.provider_api_key.startswith('ci_live_'):
+            config.provider = 'Chinf'
+            os.environ['CHINF_API_KEY'] = args.provider_api_key
         elif args.provider_api_key.startswith('tml-'):
             config.provider = 'Tinker'
             os.environ['TINKER_API_KEY'] = args.provider_api_key

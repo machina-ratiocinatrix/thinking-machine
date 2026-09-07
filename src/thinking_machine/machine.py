@@ -70,6 +70,27 @@ def machine(plato_text, config, **kwargs):
         thoughts = llm_soup_to_text(thoughts)
         return thoughts, text
 
+    elif provider == 'Chinf':
+        # Transform plato_text to MUJ format
+        messages = plato_text_to_cmj(plato_text=plato_text,
+                                     machine_name=name)
+        # Call OpenAI API via opehaina
+        environ['CHINF_API_KEY'] = api_key
+        try:
+            from .providers import chinf
+        except ImportError:
+            print("chinf module is missing.", file=sys.stderr)
+            sys.exit(1)
+
+        thoughts, text = chinf.respond(
+            messages=messages,
+            instructions=system_prompt,
+            **kwargs
+        )
+
+        thoughts = llm_soup_to_text(thoughts)
+        return thoughts, text
+
     elif provider == 'Gemini':
         # Transform plato_text to MPUJ format
         messages = plato_text_to_mpuj(plato_text=plato_text,

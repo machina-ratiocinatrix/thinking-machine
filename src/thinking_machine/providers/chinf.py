@@ -12,43 +12,39 @@ from os import environ
 
 
 def respond(messages=None, instructions=None, **kwargs):
-    """ A version without tool calling.
+    """ All parameters should be in kwargs, but they are optional
     """
-    api_key = environ.get("TINKER_API_KEY", '')
-    default_model = environ.get("TINKER_DEFAULT_MODEL", 'thinkingmachines/Inkling')
-    api_base = environ.get("TINKER_OAI_API_BASE",
-                               'https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1')
+    # The configuration.
+    api_key = environ.get("CHINF_API_KEY", '')
+    default_model = environ.get("CHINF_DEFAULT_MODEL", 'gpt-5.6-luna')
+    api_base = environ.get("CHINF_API_BASE", "https://api.cheaperinference.com/v1")
 
     # Set the mandatory headers
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
-        "User-Agent": "machine-thinking"
+        "X-Api-Key": api_key,
+        "Anthropic-Version": "2023-06-01",
+        "User-Agent": "chinf"
     }
 
-    instruction         = kwargs.get('system_instruction', instructions)
-    first_message       = [dict(role='system', content=instruction)] if instruction else []
+    # Receive the instruction
+    instruction = kwargs.get('system_instruction', instructions)
+    first_message = [dict(role='system', content=instruction)] if instruction else []
 
-    # contents can come in kwards or as an argument
-    messages            = kwargs.get('messages', messages)
-
+    # add contents and user text to the first (instruction) message
     first_message.extend(messages)
     instruction_and_contents = first_message
 
+    # Define the initial payload
     payload = {
-        'model': kwargs.get('model', default_model),
-        'messages': instruction_and_contents,
-        # 'response_format':          kwargs.get('response_format',{'type': 'text'}),
-        'temperature': kwargs.get('temperature', 1.0),  # 0.0 to 2.0
-        'max_tokens': kwargs.get('max_tokens', 4096),
-        'top_p': kwargs.get('top_p', 0.9),
-        'separate_reasoning': True,
-        'reasoning_effort': kwargs.get('reasoning_effort', 'high'),  # 'low', 'medium', 'high'
-        'stream': False
+        "model":            kwargs.get("model", default_model),
+        "messages":         instruction_and_contents,
+        "max_tokens":       kwargs.get("max_tokens", 132000),
+        "reasoning_effort": "max",
     }
-    # Convert for sending.
+    # Convert
     data_bytes = json.dumps(payload).encode('utf-8')
-
     # Create the Request object
     req = urllib.request.Request(
         f'{api_base}/chat/completions',
@@ -73,11 +69,11 @@ def respond(messages=None, instructions=None, **kwargs):
         # Handle network/connection errors
         print(f"Failed to reach the server: {e.reason}")
         output = {}
-
+    # Discern what we got
     result = output.get('choices', {})
     if result:
         completion_message = result[0]['message']
-        thoughts = completion_message.get('reasoning_content', '')
+        thoughts = completion_message.get('reasoning', '')
         text = completion_message.get('content', '')
     else:
         thoughts = ''
@@ -86,5 +82,5 @@ def respond(messages=None, instructions=None, **kwargs):
     return thoughts, text
 
 
-if __name__ == '__main__':
-   ...
+if __name__ == "__main__":
+    ...
