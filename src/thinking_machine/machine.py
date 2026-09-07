@@ -72,7 +72,7 @@ def machine(plato_text, config, **kwargs):
 
     elif provider == 'Chinf':
         # Transform plato_text to MUJ format
-        messages = plato_text_to_cmj(plato_text=plato_text,
+        messages = plato_text_to_muj(plato_text=plato_text,
                                      machine_name=name)
         # Call OpenAI API via opehaina
         environ['CHINF_API_KEY'] = api_key
