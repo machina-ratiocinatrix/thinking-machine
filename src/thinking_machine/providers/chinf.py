@@ -24,8 +24,9 @@ def respond(messages=None, instructions=None, **kwargs):
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
         "X-Api-Key": api_key,
+        "X-CI-Model-Lock": True,
         "Anthropic-Version": "2023-06-01",
-        "User-Agent": "chinf"
+        "User-Agent": "Name-of-the-Machine"
     }
 
     # Receive the instruction
@@ -41,7 +42,7 @@ def respond(messages=None, instructions=None, **kwargs):
         "model":            kwargs.get("model", default_model),
         "messages":         instruction_and_contents,
         "max_tokens":       kwargs.get("max_tokens", 132000),
-        "reasoning_effort": "max",
+        "reasoning_effort": kwargs.get("reasoning_effort", "high"),
     }
     # Convert
     data_bytes = json.dumps(payload).encode('utf-8')
@@ -70,11 +71,11 @@ def respond(messages=None, instructions=None, **kwargs):
         print(f"Failed to reach the server: {e.reason}")
         output = {}
     # Discern what we got
-    result = output.get('choices', {})
-    if result:
-        completion_message = result[0]['message']
-        thoughts = completion_message.get('reasoning', '')
-        text = completion_message.get('content', '')
+    choice = output.get('choices', [])
+    if choice:
+        message = choice[0]['message']
+        thoughts = message.get('reasoning') or message('reasoning_content') or ''
+        text = message.get('content', '')
     else:
         thoughts = ''
         text = ''
