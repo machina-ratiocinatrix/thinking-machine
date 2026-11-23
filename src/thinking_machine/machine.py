@@ -27,6 +27,7 @@ def machine(plato_text, config, **kwargs):
     # Load an appropriate library and query the API.
     provider = config.provider
     api_key  = config.provider_api_key
+    model    = config.model
     
     if provider == 'OpenAI':
         # Transform plato_text to MUJ format
@@ -74,8 +75,10 @@ def machine(plato_text, config, **kwargs):
         # Transform plato_text to MUJ format
         messages = plato_text_to_cmj(plato_text=plato_text,
                                      machine_name=name)
-        # Call OpenAI API via opehaina
+        # Call Chinf API
         environ['CHINF_API_KEY'] = api_key
+        environ['CHINF_DEFAULT_MODEL'] = model
+
         try:
             from .providers import chinf
         except ImportError:
