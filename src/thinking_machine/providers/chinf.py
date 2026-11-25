@@ -26,7 +26,7 @@ def respond(messages=None, instructions=None, **kwargs):
         "X-Api-Key": api_key,
         "X-CI-Model-Lock": True,
         "Anthropic-Version": "2023-06-01",
-        "User-Agent": "Name-of-the-Machine"
+        "User-Agent": "Thinking-Machine"
     }
 
     # Receive the instruction
@@ -56,6 +56,7 @@ def respond(messages=None, instructions=None, **kwargs):
     try:
         # Execute the request
         with urllib.request.urlopen(req, timeout=3000) as response:
+            headers = dict(response.headers)
             response_data = response.read().decode('utf-8')
             output = json.loads(response_data)
 
